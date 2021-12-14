@@ -26,15 +26,13 @@ contract HeroStore is HeroDatabase {
         // check if any base heroes are present => only if caller lost the base hero (for whatever reason) we allow to generate a new one.
         uint256[] memory tokensOfCaller = tokenListOfOwner(msg.sender);
 
-        if (tokensOfCaller.length > 0) {
-            for (uint256 i = 0; i < tokensOfCaller.length - 1; i++) {
-                Hero memory heroToCheck = tokenToHero[tokensOfCaller[i]];
+        for (uint256 i = 0; i < tokensOfCaller.length; i++) {
+            Hero memory heroToCheck = tokenToHero[tokensOfCaller[i]];
 
-                require(
-                    heroToCheck.heroType != 0,
-                    "HeroStore: Only one base hero per wallet is allowed!"
-                );
-            }
+            require(
+                heroToCheck.heroType != 1,
+                "HeroStore: Only one base hero per wallet is allowed!"
+            );
         }
 
         Hero memory newHero = _createRandomHero(_name, _baseHeroMetadataUri);
